@@ -1,27 +1,6 @@
-/*!
- * jQuery JavaScript Library v2.2.4
- * http://jquery.com/
- *
- * Includes Sizzle.js
- * http://sizzlejs.com/
- *
- * Copyright jQuery Foundation and other contributors
- * Released under the MIT license
- * http://jquery.org/license
- *
- * Date: 2016-05-20T17:23Z
- */
-
 (function(global, factory) {
 
     if (typeof module === "object" && typeof module.exports === "object") {
-        // For CommonJS and CommonJS-like environments where a proper `window`
-        // is present, execute the factory and get jQuery.
-        // For environments that do not have a `window` with a `document`
-        // (such as Node.js), expose a factory as module.exports.
-        // This accentuates the need for the creation of a real `window`.
-        // e.g. var jQuery = require("jquery")(window);
-        // See ticket #14549 for more info.
         module.exports = global.document ?
             factory(global, true) :
             function(w) {
@@ -33,15 +12,7 @@
     } else {
         factory(global);
     }
-
-    // Pass this if window is not defined yet
 }(typeof window !== "undefined" ? window : this, function(window, noGlobal) {
-
-    // Support: Firefox 18+
-    // Can't be in strict mode, several libs including ASP.NET trace
-    // the stack via arguments.caller.callee and Firefox dies if
-    // you try to trace through "use strict" call chains. (#13335)
-    //"use strict";
     var arr = [];
 
     var document = window.document;
@@ -66,73 +37,50 @@
 
     var
         version = "2.2.4",
-
-        // Define a local copy of jQuery
         jQuery = function(selector, context) {
-
-            // The jQuery object is actually just the init constructor 'enhanced'
-            // Need init if jQuery is called (just allow error to be thrown if not included)
             return new jQuery.fn.init(selector, context);
         },
 
-        // Support: Android<4.1
-        // Make sure we trim BOM and NBSP
         rtrim = /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g,
 
-        // Matches dashed string for camelizing
         rmsPrefix = /^-ms-/,
         rdashAlpha = /-([\da-z])/gi,
 
-        // Used by jQuery.camelCase as callback to replace()
         fcamelCase = function(all, letter) {
             return letter.toUpperCase();
         };
 
     jQuery.fn = jQuery.prototype = {
-
-        // The current version of jQuery being used
         jquery: version,
 
         constructor: jQuery,
 
-        // Start with an empty selector
         selector: "",
 
-        // The default length of a jQuery object is 0
         length: 0,
 
         toArray: function() {
             return slice.call(this);
         },
 
-        // Get the Nth element in the matched element set OR
-        // Get the whole matched element set as a clean array
         get: function(num) {
             return num != null ?
 
-                // Return just the one element from the set
                 (num < 0 ? this[num + this.length] : this[num]) :
 
-                // Return all the elements in a clean array
                 slice.call(this);
         },
 
-        // Take an array of elements and push it onto the stack
-        // (returning the new matched element set)
         pushStack: function(elems) {
 
-            // Build a new jQuery matched element set
             var ret = jQuery.merge(this.constructor(), elems);
 
-            // Add the old object onto the stack (as a reference)
             ret.prevObject = this;
             ret.context = this.context;
 
-            // Return the newly-formed element set
             return ret;
         },
 
-        // Execute a callback for every element in the matched set.
         each: function(callback) {
             return jQuery.each(this, callback);
         },
@@ -165,8 +113,6 @@
             return this.prevObject || this.constructor();
         },
 
-        // For internal use only.
-        // Behaves like an Array's method, not like a jQuery method.
         push: push,
         sort: arr.sort,
         splice: arr.splice
@@ -179,21 +125,17 @@
             length = arguments.length,
             deep = false;
 
-        // Handle a deep copy situation
         if (typeof target === "boolean") {
             deep = target;
 
-            // Skip the boolean and the target
             target = arguments[i] || {};
             i++;
         }
 
-        // Handle case when target is a string or something (possible in deep copy)
         if (typeof target !== "object" && !jQuery.isFunction(target)) {
             target = {};
         }
 
-        // Extend jQuery itself if only one argument is passed
         if (i === length) {
             target = this;
             i--;
@@ -201,20 +143,16 @@
 
         for (; i < length; i++) {
 
-            // Only deal with non-null/undefined values
             if ((options = arguments[i]) != null) {
 
-                // Extend the base object
                 for (name in options) {
                     src = target[name];
                     copy = options[name];
 
-                    // Prevent never-ending loop
                     if (target === copy) {
                         continue;
                     }
 
-                    // Recurse if we're merging plain objects or arrays
                     if (deep && copy && (jQuery.isPlainObject(copy) ||
                             (copyIsArray = jQuery.isArray(copy)))) {
 
@@ -226,10 +164,8 @@
                             clone = src && jQuery.isPlainObject(src) ? src : {};
                         }
 
-                        // Never move original objects, clone them
                         target[name] = jQuery.extend(deep, clone, copy);
 
-                        // Don't bring in undefined values
                     } else if (copy !== undefined) {
                         target[name] = copy;
                     }
@@ -237,16 +173,13 @@
             }
         }
 
-        // Return the modified object
         return target;
     };
 
     jQuery.extend({
 
-        // Unique for each copy of jQuery on the page
         expando: "jQuery" + (version + Math.random()).replace(/\D/g, ""),
 
-        // Assume jQuery is ready without the ready module
         isReady: true,
 
         error: function(msg) {
@@ -267,10 +200,7 @@
 
         isNumeric: function(obj) {
 
-            // parseFloat NaNs numeric-cast false positives (null|true|false|"")
-            // ...but misinterprets leading-number strings, particularly hex literals ("0x...")
-            // subtraction forces infinities to NaN
-            // adding 1 corrects loss of precision from parseFloat (#15100)
+
             var realStringObj = obj && obj.toString();
             return !jQuery.isArray(obj) && (realStringObj - parseFloat(realStringObj) + 1) >= 0;
         },
@@ -278,23 +208,16 @@
         isPlainObject: function(obj) {
             var key;
 
-            // Not plain objects:
-            // - Any object or value whose internal [[Class]] property is not "[object Object]"
-            // - DOM nodes
-            // - window
             if (jQuery.type(obj) !== "object" || obj.nodeType || jQuery.isWindow(obj)) {
                 return false;
             }
 
-            // Not own constructor property must be Object
             if (obj.constructor &&
                 !hasOwn.call(obj, "constructor") &&
                 !hasOwn.call(obj.constructor.prototype || {}, "isPrototypeOf")) {
                 return false;
             }
 
-            // Own properties are enumerated firstly, so to speed up,
-            // if last one is own, then all properties are own
             for (key in obj) {}
 
             return key === undefined || hasOwn.call(obj, key);
@@ -704,8 +627,6 @@
                 unloadHandler = function() {
                     setDocument();
                 };
-
-            // Optimize for push.apply( _, NodeList )
             try {
                 push.apply(
                     (arr = slice.call(preferredDoc.childNodes)),
@@ -761,20 +682,12 @@
 
                     if (documentIsHTML) {
 
-                        // If the selector is sufficiently simple, try using a "get*By*" DOM method
-                        // (excepting DocumentFragment context, where the methods don't exist)
                         if (nodeType !== 11 && (match = rquickExpr.exec(selector))) {
 
-                            // ID selector
                             if ((m = match[1])) {
-
-                                // Document context
                                 if (nodeType === 9) {
                                     if ((elem = context.getElementById(m))) {
 
-                                        // Support: IE, Opera, Webkit
-                                        // TODO: identify versions
-                                        // getElementById can match elements by name instead of ID
                                         if (elem.id === m) {
                                             results.push(elem);
                                             return results;
@@ -783,12 +696,7 @@
                                         return results;
                                     }
 
-                                    // Element context
                                 } else {
-
-                                    // Support: IE, Opera, Webkit
-                                    // TODO: identify versions
-                                    // getElementById can match elements by name instead of ID
                                     if (newContext && (elem = newContext.getElementById(m)) &&
                                         contains(context, elem) &&
                                         elem.id === m) {
@@ -797,13 +705,10 @@
                                         return results;
                                     }
                                 }
-
-                                // Type selector
                             } else if (match[2]) {
                                 push.apply(results, context.getElementsByTagName(selector));
                                 return results;
 
-                                // Class selector
                             } else if ((m = match[3]) && support.getElementsByClassName &&
                                 context.getElementsByClassName) {
 
@@ -812,7 +717,6 @@
                             }
                         }
 
-                        // Take advantage of querySelectorAll
                         if (support.qsa &&
                             !compilerCache[selector + " "] &&
                             (!rbuggyQSA || !rbuggyQSA.test(selector))) {
@@ -820,21 +724,14 @@
                             if (nodeType !== 1) {
                                 newContext = context;
                                 newSelector = selector;
-
-                                // qSA looks outside Element context, which is not what we want
-                                // Thanks to Andrew Dupont for this workaround technique
-                                // Support: IE <=8
-                                // Exclude object elements
                             } else if (context.nodeName.toLowerCase() !== "object") {
 
-                                // Capture the context ID, setting it first if necessary
                                 if ((nid = context.getAttribute("id"))) {
                                     nid = nid.replace(rescape, "\\$&");
                                 } else {
                                     context.setAttribute("id", (nid = expando));
                                 }
 
-                                // Prefix every selector in the list
                                 groups = tokenize(selector);
                                 i = groups.length;
                                 nidselect = ridentifier.test(nid) ? "#" + nid : "[id='" + nid + "']";
@@ -1161,63 +1058,36 @@
                     }
                 };
 
-                /* QSA/matchesSelector
-                ---------------------------------------------------------------------- */
-
-                // QSA and matchesSelector support
-
-                // matchesSelector(:active) reports false when true (IE9/Opera 11.5)
                 rbuggyMatches = [];
 
-                // qSa(:focus) reports false when true (Chrome 21)
-                // We allow this because of a bug in IE8/9 that throws an error
-                // whenever `document.activeElement` is accessed on an iframe
-                // So, we allow :focus to pass through QSA all the time to avoid the IE error
-                // See http://bugs.jquery.com/ticket/13378
                 rbuggyQSA = [];
 
                 if ((support.qsa = rnative.test(document.querySelectorAll))) {
-                    // Build QSA regex
-                    // Regex strategy adopted from Diego Perini
+
                     assert(function(div) {
-                        // Select is set to empty string on purpose
-                        // This is to test IE's treatment of not explicitly
-                        // setting a boolean content attribute,
-                        // since its presence should be enough
-                        // http://bugs.jquery.com/ticket/12359
+
                         docElem.appendChild(div).innerHTML = "<a id='" + expando + "'></a>" +
                             "<select id='" + expando + "-\r\\' msallowcapture=''>" +
                             "<option selected=''></option></select>";
 
-                        // Support: IE8, Opera 11-12.16
-                        // Nothing should be selected when empty strings follow ^= or $= or *=
-                        // The test attribute must be unknown in Opera but "safe" for WinRT
-                        // http://msdn.microsoft.com/en-us/library/ie/hh465388.aspx#attribute_section
                         if (div.querySelectorAll("[msallowcapture^='']").length) {
                             rbuggyQSA.push("[*^$]=" + whitespace + "*(?:''|\"\")");
                         }
 
-                        // Support: IE8
-                        // Boolean attributes and "value" are not treated correctly
+
                         if (!div.querySelectorAll("[selected]").length) {
                             rbuggyQSA.push("\\[" + whitespace + "*(?:value|" + booleans + ")");
                         }
 
-                        // Support: Chrome<29, Android<4.4, Safari<7.0+, iOS<7.0+, PhantomJS<1.9.8+
+
                         if (!div.querySelectorAll("[id~=" + expando + "-]").length) {
                             rbuggyQSA.push("~=");
                         }
 
-                        // Webkit/Opera - :checked should return selected option elements
-                        // http://www.w3.org/TR/2011/REC-css3-selectors-20110929/#checked
-                        // IE8 throws error here and will not see later tests
                         if (!div.querySelectorAll(":checked").length) {
                             rbuggyQSA.push(":checked");
                         }
 
-                        // Support: Safari 8+, iOS 8+
-                        // https://bugs.webkit.org/show_bug.cgi?id=136851
-                        // In-page `selector#id sibing-combinator selector` fails
                         if (!div.querySelectorAll("a#" + expando + "+*").length) {
                             rbuggyQSA.push(".#.+[+~]");
                         }
@@ -3848,13 +3718,8 @@
                 }
             }
 
-            // Remove the expando if there's no more data
-            if (key === undefined || jQuery.isEmptyObject(cache)) {
 
-                // Support: Chrome <= 35-45+
-                // Webkit & Blink performance suffers when deleting properties
-                // from DOM nodes, so set to undefined instead
-                // https://code.google.com/p/chromium/issues/detail?id=378607
+            if (key === undefined || jQuery.isEmptyObject(cache)) {
                 if (owner.nodeType) {
                     owner[this.expando] = undefined;
                 } else {
@@ -3871,26 +3736,12 @@
 
     var dataUser = new Data();
 
-
-
-    //	Implementation Summary
-    //
-    //	1. Enforce API surface and semantic compatibility with 1.9.x branch
-    //	2. Improve the module's maintainability by reducing the storage
-    //		paths to a single mechanism.
-    //	3. Use the same single mechanism to support "private" and "user" data.
-    //	4. _Never_ expose "private" data to user code (TODO: Drop _data, _removeData)
-    //	5. Avoid exposing implementation details on user objects (eg. expando properties)
-    //	6. Provide a clear path for implementation upgrade to WeakMap in 2014
-
     var rbrace = /^(?:\{[\w\W]*\}|\[[\w\W]*\])$/,
         rmultiDash = /[A-Z]/g;
 
     function dataAttr(elem, key, data) {
         var name;
 
-        // If nothing was found internally, try to fetch any
-        // data from the HTML5 data-* attribute
         if (data === undefined && elem.nodeType === 1) {
             name = "data-" + key.replace(rmultiDash, "-$&").toLowerCase();
             data = elem.getAttribute(name);
@@ -3901,13 +3752,13 @@
                         data === "false" ? false :
                         data === "null" ? null :
 
-                        // Only convert to a number if it doesn't change the string
+
                         +data + "" === data ? +data :
                         rbrace.test(data) ? jQuery.parseJSON(data) :
                         data;
                 } catch (e) {}
 
-                // Make sure we set the data so it isn't changed later
+
                 dataUser.set(elem, key, data);
             } else {
                 data = undefined;
@@ -3929,8 +3780,6 @@
             dataUser.remove(elem, name);
         },
 
-        // TODO: Now that all calls to _data and _removeData have been replaced
-        // with direct calls to dataPriv methods, these can be deprecated.
         _data: function(elem, name, data) {
             return dataPriv.access(elem, name, data);
         },
@@ -5222,7 +5071,6 @@
         }
     }
 
-    // Fix IE bugs, see support tests
     function fixInput(src, dest) {
         var nodeName = dest.nodeName.toLowerCase();
 
@@ -5358,7 +5206,6 @@
                 clone = elem.cloneNode(true),
                 inPage = jQuery.contains(elem.ownerDocument, elem);
 
-            // Fix IE cloning issues
             if (!support.noCloneChecked && (elem.nodeType === 1 || elem.nodeType === 11) &&
                 !jQuery.isXMLDoc(elem)) {
 
@@ -7319,7 +7166,6 @@
 
             if (nType !== 1 || !jQuery.isXMLDoc(elem)) {
 
-                // Fix name and attach hooks
                 name = jQuery.propFix[name] || name;
                 hooks = jQuery.propHooks[name];
             }
